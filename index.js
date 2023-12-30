@@ -36,11 +36,20 @@ function getFixedTable(str) {
         .join("\n");
 }
 
-async function scrap(url, cookie) {
+async function scrap(params, cookie) {
     try {
-        const response = await axios.get(url || config.url, {
+        const { pModule, pSub, pAct, niu, prodi, sem } = params || {};
+        const response = await axios.get(config.url, {
             headers: {
                 Cookie: `PHPSESSID=${cookie || config.cookie}`,
+            },
+            params: {
+                pModule: pModule || config.pModule,
+                pSub: pSub || config.pSub,
+                pAct: pAct || config.pAct,
+                niu: niu || config.niu,
+                prodi: prodi || config.prodi,
+                sem: sem || config.sem,
             },
         });
 
@@ -82,10 +91,24 @@ async function scrap(url, cookie) {
 }
 
 app.all("/", async (req, res) => {
-    const url = req.body.url || req.header.url;
     const sesi = req.query.sesi || req.body.sesi || req.header.sesi;
+    const pModule = req.query.pModule || req.body.pModule || req.header.pModule;
+    const pSub = req.query.pSub || req.body.pSub || req.header.pSub;
+    const pAct = req.query.pAct || req.body.pAct || req.header.pAct;
+    const niu = req.query.niu || req.body.niu || req.header.niu;
+    const prodi = req.query.prodi || req.body.prodi || req.header.prodi;
+    const sem = req.query.sem || req.body.sem || req.header.sem;
 
-    let result = await scrap(url, sesi);
+    const params = {
+        pModule,
+        pSub,
+        pAct,
+        niu,
+        prodi,
+        sem,
+    };
+
+    let result = await scrap(params, sesi);
 
     res.json(result);
 });
