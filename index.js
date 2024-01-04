@@ -10,7 +10,10 @@ app.use(
 const PORT = 4062;
 
 const axios = require("axios");
-const config = require("./config");
+const fs = require("fs");
+const config = fs.existsSync("config-fix.js")
+    ? require("./config-fix")
+    : require("./config");
 const { Console } = require("node:console");
 const { Transform } = require("node:stream");
 
