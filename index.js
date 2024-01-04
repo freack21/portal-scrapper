@@ -74,11 +74,18 @@ async function scrap(params, cookie) {
 
         const nilai = result.filter((d) => d["Nama"]);
         const sum = result.filter((d) => d["IPS"])[0];
+        const mhs = {
+            Nama: converted[0][0]["2"],
+            NIM: converted[0][1]["2"],
+            Prodi: converted[0][3]["2"],
+            sum: `${converted[0][0]["2"]}\n${converted[0][1]["2"]}\n${converted[0][3]["2"]}`,
+        };
         // const str = getTable(nilai);
         // const str2 = getTable(sum);
         // fs.writeFileSync("str1.txt", JSON.stringify(nilai, null, 2));
         // fs.writeFileSync("str2.txt", JSON.stringify(sum, null, 2));
         return Promise.resolve({
+            mhs,
             nilai,
             sum,
         });
